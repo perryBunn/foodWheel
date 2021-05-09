@@ -1,0 +1,173 @@
+<html>
+    <head>
+        <title>Wheel of fortune Wheel</title>
+        <link rel="stylesheet" href="index.css" type="text/css" />
+        <script src='Winwheel.js'></script>
+        <script src="http:
+    </head>
+    <body>
+      <div align="center">
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td>
+                        <div class="power_controls">
+                            <button id="spin_button" alt="Spin" onClick="startSpin();">EAT!</button>
+                            <br /><br />
+                            &nbsp;&nbsp;<a href="#" onClick="resetWheel(); return false;">Play Again</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reset)
+                        </div>
+                    </td>
+                    <td width="438" height="582" class="the_wheel" align="center" valign="center">
+                        <canvas id="canvas" width="800" height="800">
+                            <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
+                        </canvas>
+                    </td>
+                </tr>
+            </table>
+            <p id="place"></p>
+      </div>
+      <script>
+            let places = [
+                'CFA',
+                'Momma G\'s',
+                'Chipotle',
+                'Insomnia',
+                'Panda',
+                'Waffle House',
+                'McD',
+                'Five Guys',
+                'Mellow Mushroom',
+                'Taco Mama',
+                'Moe\'s Southwest',
+                'Moe\'s BBQ',
+                'Cheeburger Cheeburger',
+                'Foos',
+                'Taco Bell',
+                'BurgerFi',
+                'Zoes',
+                'Tacorita',
+                'Auburn Draft House',
+                'Tropical Smoothie Cafe',
+                'Jimmy Johns',
+                'Arigato Sushi',
+                'Pho Lee',
+                'Acapulcos',
+                'East Sea Fishery',
+                'Naruto Korean',
+                'Tenda Chick',
+                'Zaxbys',
+                'Live Oaks',
+                'Wings Etc',
+                'Proud Willies',
+                'Agave Loco',
+                'Umami Auburn',
+                'Baumhowers',
+                'Wooden Chopsticks',
+                'Wendys',
+                'Salsaritas',
+                'VooDoo Wings',
+                'Cook Out',
+                'ChickChickPorkPork',
+                'Edies Calzones',
+                'QPOT',
+                'Panera Bread',
+                'Jin Korean',
+                'Pannie-George\'s Kitchen',
+                'Wing Town',
+                'Wings N Claw',
+                'KFC',
+                'Steak\'n\'Shake'
+            ]
+
+            placeColor = []
+            places.forEach(function(text) {
+              let color = intToRGB(hashCode(text))
+              placeColor.push({'fillStyle' : '#' + color, 'text' : text})
+            })
+
+            let theWheel = new Winwheel({
+                'outerRadius'     : 400,        
+                'innerRadius'     : 75,         
+                'textFontSize'    : 15,         
+                'textOrientation' : 'vertical', 
+                'textAlignment'   : 'outer',    
+                'numSegments'     : placeColor.length,         
+                'segments'        : placeColor,
+                'animation' :           
+                {
+                    'type'     : 'spinToStop',
+                    'duration' : 15,
+                    'spins'    : 5,
+                    'callbackFinished' : alertPrize,  
+                },
+                'pins' :                
+                {
+                    'number'     : placeColor.length,
+                    'fillStyle'  : 'silver',
+                    'outerRadius': 4,
+                }
+            });
+
+            let wheelPower    = 0;
+            let wheelSpinning = false;
+ 
+            function alertPrize(indicatedSegment) {
+              wheelSpinning = false
+              document.getElementById('place').innerHTML = indicatedSegment.text
+            }
+
+            function startSpin() {
+                if (wheelSpinning == false) {
+                    
+                    
+                    wheelPower = Math.random() * 3;
+
+                    if (wheelPower < 1) {
+                        theWheel.animation.spins = 3;
+                    } else if (wheelPower < 2) {
+                        theWheel.animation.spins = 8;
+                    } else if (wheelPower < 3) {
+                        theWheel.animation.spins = 15;
+                    }
+
+                    
+                    document.getElementById('spin_button').src       = "spin_off.png";
+                    document.getElementById('spin_button').className = "";
+
+                    
+                    theWheel.startAnimation();
+
+                    
+                    
+                    wheelSpinning = true;
+                }
+            }
+
+            function resetWheel() {
+                wheelSpinning = false
+                theWheel.stopAnimation(false);  
+                theWheel.rotationAngle = 0;     
+                theWheel.draw();                
+
+                document.getElementById('place').textContent("")
+
+                wheelSpinning = false;          
+            }
+
+            function hashCode(str) { 
+              var hash = 0;
+              for (var i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+              }
+              return hash;
+            } 
+
+            function intToRGB(i) {
+              var c = (i & 0x00FFFFFF)
+                  .toString(16)
+                  .toUpperCase();
+
+              return "00000".substring(0, 6 - c.length) + c;
+            }
+      </script>
+    </body>
+</html>
