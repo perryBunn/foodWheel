@@ -60,19 +60,6 @@ button {
     100%{color: orange;}
 }
 
-.content-header {
-    float: left;
-    margin-top: 5px;
-    width: 100%;
-    height: auto;
-    align-content: left;
-    z-index: 100;
-}
-
-.content {
-    z-index: -1;
-}
-
 .content-footer {
     position: absolute;
     bottom: 0;
